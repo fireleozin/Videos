@@ -173,8 +173,29 @@ def render(cfg, cut, src, outdir, test=False):
              "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-profile:v", "high", "-pix_fmt", "yuv420p",
              "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart", out]
     subprocess.run(args, check=True)
+    if cfg.get("endcard"):
+        total = add_endcard(out, os.path.join(HERE, cfg["endcard"]), total)
     print(f"OK {out}  ({total:.1f}s)")
     return out
+
+def add_endcard(video, card, dur, hold=3.5, fade=0.35):
+    """Emenda a tela final (seguir/curtir) com dissolve + leve zoom de entrada."""
+    tmp = video.replace(".mp4", ".tmp.mp4")
+    off = dur - fade
+    fc = (f"[0:v]fps={FPS},format=yuv420p,setpts=PTS-STARTPTS[a];"
+          f"[1:v]format=yuv420p,scale=1188:2112,zoompan=z='max(1.1-0.1*on/18,1)':x='iw/2-iw/zoom/2':"
+          f"y='ih/2-ih/zoom/2':d=1:s={OUT_W}x{OUT_H}:fps={FPS}[b];"
+          f"[a][b]xfade=transition=fade:duration={fade}:offset={off:.3f}[v];"
+          f"[0:a]asetpts=PTS-STARTPTS,afade=t=out:st={max(dur - 0.6, 0):.3f}:d=0.6[a0];"
+          f"[a0][2:a]acrossfade=d={fade}[au]")
+    subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", video,
+                    "-loop", "1", "-t", str(hold), "-framerate", str(FPS), "-i", card,
+                    "-f", "lavfi", "-t", str(hold), "-i", "anullsrc=r=48000:cl=stereo",
+                    "-filter_complex", fc, "-map", "[v]", "-map", "[au]",
+                    "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-profile:v", "high", "-pix_fmt", "yuv420p",
+                    "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart", tmp], check=True)
+    os.replace(tmp, video)
+    return dur + hold - fade
 
 def make_test_source(path, dur):
     # 1920x1080 com "facecam" (quadro azul) no lugar real e tom de áudio
