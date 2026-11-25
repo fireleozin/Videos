@@ -18,7 +18,7 @@ OUT_W, OUT_H = 1080, 1920
 CAM_H = 720                     # altura da facecam no vertical
 GAME_H = OUT_H - CAM_H          # 1200
 FPS = 60
-CAPTION_Y = CAM_H + 150         # legendas logo abaixo da emenda, sobre o gameplay
+CAPTION_Y = CAM_H + 215        # legendas logo abaixo do título/emenda, sobre o gameplay
 TITLE_SECS = 3.2
 FONT = "Inter Black"
 JOIN_FADE = 0.025               # micro fade nas emendas (evita estalos)
@@ -42,7 +42,8 @@ def chunk_words(words, max_words=3, max_chars=16, gap=0.45):
             text_len = sum(len(x["w"]) + 1 for x in cur) + len(wd["w"])
             mw, mc = (12, 48) if wd["style"] == "npc" else (max_words, max_chars)
             if (len(cur) >= mw or text_len > mc or wd["t"] - prev["end"] > gap
-                    or re.search(r"[.?!]$", prev["raw"]) or wd["style"] != prev["style"]):
+                    or re.search(r"[.?!]$", prev["raw"])
+                    or (prev["raw"].endswith(",") and len(cur) >= 2) or wd["style"] != prev["style"]):
                 chunks.append(cur); cur = []
         cur.append(wd)
     if cur: chunks.append(cur)
@@ -59,19 +60,22 @@ def build_ass(cut, words_src, segs, path):
             if a - 0.3 <= t < b:
                 return o + max(t - a, 0)
         return None
+    def seg_end(t):
+        for a, b, o in offs:
+            if a - 0.3 <= t < b:
+                return o + (b - a)
+        return total
     words = []
-    for item in words_src:
-        t, raw = item[0], item[1]
-        style = item[2] if len(item) > 2 else "main"
-        mt = m(t)
-        if mt is None: continue
-        words.append({"t": mt, "raw": raw, "w": clean(raw), "style": style})
+    for item in words_src:            # [inicio, fim, palavra] em tempo da fonte
+        t0, t1, raw = item[0], item[1], item[2]
+        mt = m(t0)
+        if mt is None or not raw: continue
+        end = min(mt + max(t1 - t0, 0.1), seg_end(t0))
+        words.append({"t": mt, "end": end, "raw": raw, "w": clean(raw), "style": "main"})
     words.sort(key=lambda x: x["t"])
-    # fim de cada palavra = início da próxima (limitado), nunca atravessa emenda distante
-    for i, wd in enumerate(words):
-        nxt = words[i + 1]["t"] if i + 1 < len(words) else total
-        wd["end"] = min(nxt, wd["t"] + 0.9, total)
-        if wd["end"] - wd["t"] < 0.08: wd["end"] = wd["t"] + 0.08
+    for i, wd in enumerate(words):      # nunca sobrepor a próxima palavra
+        if i + 1 < len(words):
+            wd["end"] = max(min(wd["end"], words[i + 1]["t"]), wd["t"] + 0.06)
 
     head = f"""[Script Info]
 ScriptType: v4.00+
@@ -93,15 +97,19 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
     # gancho / título (caixa preta, pop-in)
     title = cut["title"].replace("\n", "\\N")
     ev.append(f"Dialogue: 5,{ts(0)},{ts(TITLE_SECS)},Title,,0,0,0,,"
-              f"{{\\an8\\pos({OUT_W//2},{CAM_H-260})\\3c&H000000&\\fscx80\\fscy80\\t(0,120,\\fscx104\\fscy104)\\t(120,220,\\fscx100\\fscy100)\\fad(0,250)}}{title}")
+              f"{{\\an5\\pos({OUT_W//2},{CAM_H})\\3c&H000000&\\fscx80\\fscy80\\t(0,120,\\fscx104\\fscy104)\\t(120,220,\\fscx100\\fscy100)\\fad(0,250)}}{title}")
     HL = "&H00F7FF&"   # amarelo (BGR)
-    for ch in chunk_words(words):
-        start, end = ch[0]["t"], ch[-1]["end"]
+    chunks = chunk_words(words)
+    for ci, ch in enumerate(chunks):
+        start = ch[0]["t"]
+        nxt = chunks[ci + 1][0]["t"] if ci + 1 < len(chunks) else total
+        end = nxt if nxt - ch[-1]["end"] < 0.6 else min(ch[-1]["end"] + 0.35, nxt)
         if start < TITLE_SECS - 0.05 and ch[0]["style"] == "main":
             pass  # legenda e título convivem (título fica acima)
         style = "Npc" if ch[0]["style"] == "npc" else "Cap"
         for k, wd in enumerate(ch):
             w_end = ch[k + 1]["t"] if k + 1 < len(ch) else end
+            if w_end <= wd["t"]: continue
             parts = []
             for j, x in enumerate(ch):
                 if style == "Cap" and j == k:
@@ -121,7 +129,9 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
     return total
 
 def render(cfg, cut, src, outdir, test=False):
-    segs = cut["segments"]
+    # cada trecho: [inicio, fim] ou [inicio, fim, x_do_recorte_de_gameplay]
+    gx = [s[2] if len(s) > 2 else cfg["gameplay"]["x"] for s in cut["segments"]]
+    segs = [s[:2] for s in cut["segments"]]
     words = json.load(open(os.path.join(HERE, "captions", cut["id"] + ".json"), encoding="utf-8"))
     if test:  # remapeia tudo para uma fonte sintética curta e contínua
         acc, nsegs, shift = 0.0, [], []
@@ -131,7 +141,7 @@ def render(cfg, cut, src, outdir, test=False):
         for it in words:
             for a, b, d in shift:
                 if a - 0.3 <= it[0] < b:
-                    nw.append([it[0] + d] + it[1:]); break
+                    nw.append([it[0] + d, it[1] + d] + it[2:]); break
         segs, words = nsegs, nw
     ass = os.path.join(outdir, cut["id"] + ".ass")
     tmp_cap = {"title": cut["title"]}
@@ -145,16 +155,16 @@ def render(cfg, cut, src, outdir, test=False):
     f = []
     for i, (a, b) in enumerate(segs):
         d = b - a
-        f.append(f"[{i}:v]fps={FPS},setpts=PTS-STARTPTS,format=yuv420p[v{i}]")
+        f.append(f"[{i}:v]fps={FPS},setpts=PTS-STARTPTS,format=yuv420p,split=2[c1_{i}][c2_{i}]")
+        f.append(f"[c1_{i}]crop={fc['w']}:{fc['h']}:{fc['x']}:{fc['y']},scale={OUT_W}:{CAM_H}:flags=lanczos,"
+                 f"eq=contrast=1.03:saturation=1.08[cam{i}]")
+        f.append(f"[c2_{i}]crop={gp['w']}:{gp['h']}:{gx[i]}:{gp['y']},scale={OUT_W}:{GAME_H}:flags=lanczos,"
+                 f"eq=saturation=1.1[game{i}]")
+        f.append(f"[cam{i}][game{i}]vstack=inputs=2[v{i}]")
         f.append(f"[{i}:a]aresample=48000,asetpts=PTS-STARTPTS,"
                  f"afade=t=in:st=0:d={JOIN_FADE},afade=t=out:st={max(d - JOIN_FADE, 0):.3f}:d={JOIN_FADE}[a{i}]")
     f.append("".join(f"[v{i}][a{i}]" for i in range(n)) + f"concat=n={n}:v=1:a=1[cv][ca]")
-    f.append("[cv]split=2[c1][c2]")
-    f.append(f"[c1]crop={fc['w']}:{fc['h']}:{fc['x']}:{fc['y']},scale={OUT_W}:{CAM_H}:flags=lanczos,"
-             f"eq=contrast=1.03:saturation=1.08[cam]")
-    f.append(f"[c2]crop={gp['w']}:{gp['h']}:{gp['x']}:{gp['y']},scale={OUT_W}:{GAME_H}:flags=lanczos,"
-             f"eq=saturation=1.1[game]")
-    f.append(f"[cam][game]vstack=inputs=2,drawbox=x=0:y={CAM_H-3}:w={OUT_W}:h=6:color=black@0.9:t=fill,"
+    f.append(f"[cv]drawbox=x=0:y={CAM_H-3}:w={OUT_W}:h=6:color=black@0.9:t=fill,"
              f"ass='{ass}':fontsdir=/usr/share/fonts[vout]")
     f.append("[ca]loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000[aout]")
     out = os.path.join(outdir, cut["id"] + ".mp4")
