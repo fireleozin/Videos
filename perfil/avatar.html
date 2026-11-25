@@ -1,0 +1,112 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  html,body{margin:0;padding:0;background:#000}
+  svg{display:block}
+  .lm{font-family:'Inter';font-weight:900;font-style:italic}
+</style></head>
+<body>
+<svg id="art" width="1080" height="1080" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12052e"/>
+      <stop offset="0.30" stop-color="#3d0f5c"/>
+      <stop offset="0.50" stop-color="#a0216f"/>
+      <stop offset="0.62" stop-color="#ff4d6d"/>
+      <stop offset="0.70" stop-color="#ff9248"/>
+    </linearGradient>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe66b"/>
+      <stop offset="0.55" stop-color="#ff8a3d"/>
+      <stop offset="1" stop-color="#ff2f7a"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a0b4a"/>
+      <stop offset="1" stop-color="#0b0420"/>
+    </linearGradient>
+    <linearGradient id="txt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.55" stop-color="#ffe0f3"/>
+      <stop offset="1" stop-color="#ff7ac8"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="14" result="b"/>
+      <feFlood flood-color="#ff3fd0" flood-opacity="0.95"/>
+      <feComposite in2="b" operator="in" result="g"/>
+      <feMerge><feMergeNode in="g"/><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softglow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+    <!-- metades do "LM" para o efeito de corte diagonal -->
+    <clipPath id="cutA"><polygon points="0,0 1080,0 1080,355 0,715"/></clipPath>
+    <clipPath id="cutB"><polygon points="0,715 1080,355 1080,1080 0,1080"/></clipPath>
+    <clipPath id="sunClip">
+      <rect x="0" y="0" width="1080" height="590"/>
+      <rect x="0" y="600" width="1080" height="16"/>
+      <rect x="0" y="628" width="1080" height="13"/>
+      <rect x="0" y="653" width="1080" height="10"/>
+      <rect x="0" y="675" width="1080" height="7"/>
+    </clipPath>
+    <g id="palm">
+      <path d="M0,0 C10,-120 -10,-250 30,-380" fill="none" stroke="#12051f" stroke-width="22" stroke-linecap="round"/>
+      <g transform="translate(30,-380)" fill="#12051f">
+        <path d="M0,0 C-60,-50 -150,-40 -210,10 C-140,-20 -70,-10 0,8Z"/>
+        <path d="M0,0 C60,-60 150,-55 215,0 C140,-30 70,-20 0,8Z"/>
+        <path d="M0,0 C-30,-80 -110,-120 -170,-110 C-100,-90 -40,-50 0,6Z"/>
+        <path d="M0,0 C40,-85 120,-115 180,-100 C110,-85 50,-45 0,6Z"/>
+        <path d="M0,0 C-80,10 -150,60 -170,120 C-120,60 -60,30 0,10Z"/>
+        <path d="M0,0 C80,5 150,55 175,115 C125,58 65,28 0,10Z"/>
+        <path d="M-6,0 C-10,-70 0,-140 20,-175 C14,-120 10,-60 6,0Z"/>
+      </g>
+    </g>
+  </defs>
+
+  <!-- céu -->
+  <rect width="1080" height="1080" fill="url(#sky)"/>
+  <!-- estrelas -->
+  <g fill="#fff" opacity="0.7">
+    <circle cx="160" cy="140" r="3"/><circle cx="310" cy="90" r="2"/><circle cx="820" cy="120" r="3"/>
+    <circle cx="930" cy="230" r="2"/><circle cx="240" cy="260" r="2"/><circle cx="700" cy="70" r="2"/>
+  </g>
+  <!-- sol retrô listrado -->
+  <circle cx="540" cy="560" r="330" fill="#ff4fa0" filter="url(#softglow)" opacity="0.55"/>
+  <circle cx="540" cy="560" r="300" fill="url(#sun)" clip-path="url(#sunClip)"/>
+  <!-- mar -->
+  <rect x="0" y="700" width="1080" height="380" fill="url(#sea)"/>
+  <g fill="#ff8a3d" opacity="0.55">
+    <rect x="330" y="718" width="420" height="7" rx="3"/>
+    <rect x="380" y="744" width="320" height="6" rx="3"/>
+    <rect x="430" y="768" width="220" height="5" rx="3"/>
+    <rect x="470" y="790" width="140" height="4" rx="2"/>
+  </g>
+  <rect x="0" y="698" width="1080" height="4" fill="#ff9fd6" opacity="0.8"/>
+  <!-- palmeiras -->
+  <use href="#palm" transform="translate(150,760) scale(1.05)"/>
+  <use href="#palm" transform="translate(70,800) scale(0.75) rotate(-6)"/>
+  <use href="#palm" transform="translate(930,760) scale(-1.05,1.05)"/>
+  <use href="#palm" transform="translate(1010,800) scale(-0.75,0.75) rotate(-6)"/>
+
+  <!-- LM com corte diagonal -->
+  <g filter="url(#glow)">
+    <g clip-path="url(#cutA)" transform="translate(-14,-10)">
+      <text x="540" y="665" text-anchor="middle" class="lm" font-size="440" letter-spacing="-18"
+            fill="url(#txt)" stroke="#2a0636" stroke-width="10" paint-order="stroke">LM</text>
+    </g>
+    <g clip-path="url(#cutB)" transform="translate(14,10)">
+      <text x="540" y="665" text-anchor="middle" class="lm" font-size="440" letter-spacing="-18"
+            fill="url(#txt)" stroke="#2a0636" stroke-width="10" paint-order="stroke">LM</text>
+    </g>
+  </g>
+  <!-- traço do corte -->
+  <line x1="150" y1="665" x2="930" y2="405" stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity="0.95"/>
+  <line x1="150" y1="665" x2="930" y2="405" stroke="#7ff6ff" stroke-width="18" stroke-linecap="round" opacity="0.35" filter="url(#softglow)"/>
+
+  <!-- faixa DOS CORTES -->
+  <g transform="translate(540,815) skewX(-10)">
+    <rect x="-325" y="-62" width="650" height="124" rx="22" fill="#0e0322" stroke="#ff4fd0" stroke-width="8"/>
+    <text x="0" y="30" text-anchor="middle" font-family="Inter" font-weight="900" font-size="82"
+          letter-spacing="6" fill="#ffffff">DOS CORTES</text>
+  </g>
+</svg>
+</body></html>
