@@ -1,0 +1,99 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;padding:0;background:#000} svg{display:block}</style></head>
+<body>
+<svg id="art" width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d0326"/>
+      <stop offset="0.45" stop-color="#2e0b52"/>
+      <stop offset="0.66" stop-color="#8e1f6e"/>
+      <stop offset="0.76" stop-color="#ff4d6d"/>
+      <stop offset="0.82" stop-color="#ff9248"/>
+    </linearGradient>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe66b"/><stop offset="0.55" stop-color="#ff8a3d"/><stop offset="1" stop-color="#ff2f7a"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a0b4a"/><stop offset="1" stop-color="#0b0420"/>
+    </linearGradient>
+    <linearGradient id="pinkbtn" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff4fa0"/><stop offset="1" stop-color="#ff2f6a"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="12" result="b"/>
+      <feFlood flood-color="#ff3fd0" flood-opacity="0.9"/><feComposite in2="b" operator="in" result="g"/>
+      <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="26"/></filter>
+    <clipPath id="avatarClip"><circle cx="540" cy="560" r="230"/></clipPath>
+    <clipPath id="sunClip">
+      <rect x="0" y="0" width="1080" height="1480"/>
+      <rect x="0" y="1492" width="1080" height="16"/><rect x="0" y="1520" width="1080" height="12"/>
+      <rect x="0" y="1544" width="1080" height="9"/>
+    </clipPath>
+    <g id="palm">
+      <path d="M0,0 C10,-120 -10,-250 30,-380" fill="none" stroke="#12051f" stroke-width="22" stroke-linecap="round"/>
+      <g transform="translate(30,-380)" fill="#12051f">
+        <path d="M0,0 C-60,-50 -150,-40 -210,10 C-140,-20 -70,-10 0,8Z"/>
+        <path d="M0,0 C60,-60 150,-55 215,0 C140,-30 70,-20 0,8Z"/>
+        <path d="M0,0 C-30,-80 -110,-120 -170,-110 C-100,-90 -40,-50 0,6Z"/>
+        <path d="M0,0 C40,-85 120,-115 180,-100 C110,-85 50,-45 0,6Z"/>
+        <path d="M0,0 C-80,10 -150,60 -170,120 C-120,60 -60,30 0,10Z"/>
+        <path d="M0,0 C80,5 150,55 175,115 C125,58 65,28 0,10Z"/>
+        <path d="M-6,0 C-10,-70 0,-140 20,-175 C14,-120 10,-60 6,0Z"/>
+      </g>
+    </g>
+  </defs>
+
+  <rect width="1080" height="1920" fill="url(#sky)"/>
+  <g fill="#fff" opacity="0.7">
+    <circle cx="140" cy="160" r="3"/><circle cx="330" cy="90" r="2"/><circle cx="880" cy="140" r="3"/>
+    <circle cx="960" cy="330" r="2"/><circle cx="120" cy="420" r="2"/><circle cx="760" cy="60" r="2"/>
+  </g>
+  <!-- sol no horizonte -->
+  <circle cx="540" cy="1470" r="330" fill="#ff4fa0" filter="url(#soft)" opacity="0.5"/>
+  <circle cx="540" cy="1470" r="300" fill="url(#sun)" clip-path="url(#sunClip)"/>
+  <rect x="0" y="1580" width="1080" height="340" fill="url(#sea)"/>
+  <rect x="0" y="1578" width="1080" height="4" fill="#ff9fd6" opacity="0.8"/>
+  <g fill="#ff8a3d" opacity="0.5">
+    <rect x="330" y="1600" width="420" height="7" rx="3"/><rect x="390" y="1626" width="300" height="6" rx="3"/>
+    <rect x="450" y="1650" width="180" height="5" rx="3"/>
+  </g>
+  <use href="#palm" transform="translate(110,1800) scale(1.0)"/>
+  <use href="#palm" transform="translate(40,1840) scale(0.7) rotate(-6)"/>
+  <use href="#palm" transform="translate(970,1800) scale(-1.0,1.0)"/>
+  <use href="#palm" transform="translate(1040,1840) scale(-0.7,0.7) rotate(-6)"/>
+
+  <!-- avatar do canal -->
+  <circle cx="540" cy="560" r="262" fill="#ff4fd0" filter="url(#soft)" opacity="0.8"/>
+  <image href="lm_dos_cortes_perfil.png" x="310" y="330" width="460" height="460" clip-path="url(#avatarClip)"/>
+  <circle cx="540" cy="560" r="232" fill="none" stroke="#ffffff" stroke-width="10"/>
+  <circle cx="540" cy="560" r="246" fill="none" stroke="#ff4fd0" stroke-width="8"/>
+
+  <!-- chamada -->
+  <text x="540" y="940" text-anchor="middle" font-family="Inter" font-weight="900" font-style="italic"
+        font-size="90" fill="#ffffff" filter="url(#glow)" stroke="#2a0636" stroke-width="8" paint-order="stroke">GOSTOU DO CORTE?</text>
+
+  <!-- botão CURTE -->
+  <g transform="translate(250,1000)">
+    <rect width="580" height="150" rx="75" fill="url(#pinkbtn)"/>
+    <path transform="translate(110,40) scale(3.1)" fill="#fff"
+      d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    <text x="330" y="100" text-anchor="middle" font-family="Inter" font-weight="900" font-size="66" fill="#fff">CURTE</text>
+  </g>
+  <!-- botão SEGUE -->
+  <g transform="translate(250,1180)">
+    <rect width="580" height="150" rx="75" fill="#ffffff"/>
+    <g transform="translate(160,75)" stroke="#ff2f6a" stroke-width="16" stroke-linecap="round">
+      <line x1="-34" y1="0" x2="34" y2="0"/><line x1="0" y1="-34" x2="0" y2="34"/>
+    </g>
+    <text x="335" y="100" text-anchor="middle" font-family="Inter" font-weight="900" font-size="66" fill="#1a0533">SEGUE</text>
+  </g>
+
+  <text x="540" y="1430" text-anchor="middle" font-family="Inter" font-weight="900" font-size="72" fill="#ffffff"
+        stroke="#2a0636" stroke-width="6" paint-order="stroke">@lmdoscortes</text>
+  <text x="540" y="1505" text-anchor="middle" font-family="Inter" font-weight="800" font-size="44" letter-spacing="3"
+        fill="#ffe0f3" stroke="#2a0636" stroke-width="5" paint-order="stroke">CORTE NOVO TODO DIA</text>
+</svg>
+</body></html>

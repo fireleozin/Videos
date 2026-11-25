@@ -88,12 +88,13 @@ ScaledBorderAndShadow: yes
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
 Style: Cap,{FONT},86,&H00FFFFFF,&H00FFFFFF,&H00000000,&H96000000,-1,0,0,0,100,100,1,0,1,7,4,5,40,40,0,1
 Style: Npc,{FONT},64,&H00E0E0E0,&H00E0E0E0,&H00000000,&H96000000,-1,-1,0,0,100,100,0,0,1,5,3,5,60,60,0,1
+Style: WM,Inter Black,58,&H9CFFFFFF,&H9CFFFFFF,&HC8000000,&HFF000000,-1,-1,0,0,100,100,4,0,1,2,0,8,0,0,0,1
 Style: Title,{FONT},74,&H00FFFFFF,&H00FFFFFF,&H00000000,&H00000000,-1,0,0,0,100,100,1,0,3,18,0,8,50,50,70,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 """
-    ev = []
+    ev = [f"Dialogue: 0,{ts(0)},{ts(total + 1)},WM,,0,0,0,,{{\\an8\\pos({OUT_W//2},34)}}LM DOS CORTES"]
     # gancho / título (caixa preta, pop-in)
     title = cut["title"].replace("\n", "\\N")
     ev.append(f"Dialogue: 5,{ts(0)},{ts(TITLE_SECS)},Title,,0,0,0,,"
