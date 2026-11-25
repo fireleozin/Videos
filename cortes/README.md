@@ -59,3 +59,19 @@ Antes de publicar, confira dois pontos no vídeo real:
 > ela é PROFISSIONAL, tá? 🔫😇 #gta6 #alanzoka #gtavi #lucia #humor #fyp
 
 Bilibili (título em chinês sugerido): `GTA6：她不是疯子，她是专业的 😂 | alanzoka`
+
+---
+
+# Parte 11: "VICE CITY, BABY! - GTA 6 - Parte 11" (alanzoka)
+
+Fonte: https://youtu.be/b0PVpihgP9c. Configuração em `cuts_parte11.json`, legendas em `captions/parte11/`. Para renderizar: `python3 render.py --config cuts_parte11.json` (saída em `output/parte11/`).
+
+| Horário | Corte | Descrição |
+|---|---|---|
+| 09h | 06 – Urso polar | SOLTARAM UM URSO POLAR NO GTA 6 E O ALAN SÓ QUERIA VER O CAOS KKKKK |
+| 12h | 07 – Assalto do amor | ALAN E A LUCIA FIZERAM O ASSALTO MAIS ROMÂNTICO DO GTA 6 KKKKK |
+| 15h | 08 – Red Dead | ALAN DESCOBRIU QUE O GTA 6 É IGUALZINHO O RED DEAD KKKKK |
+| 18h | 09 – Trem | O TREM DESTRUIU O CARRO QUE O ALAN GASTOU TUDO TUNANDO KKKKK |
+| 21h | 10 – Livro | ALAN LEU O LIVRO MAIS BIZARRO DO GTA 6 E SE ARREPENDEU KKKKK |
+
+Hashtags (todos): #gta6 #rockstargames #alanzoka #alanzokavideos #alanzokamemes

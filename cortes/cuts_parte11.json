@@ -1,0 +1,154 @@
+{
+ "source": "source/parte11.mp4",
+ "output_dir": "output/parte11",
+ "captions_dir": "captions/parte11",
+ "facecam": {
+  "x": 1512,
+  "y": 455,
+  "w": 404,
+  "h": 270
+ },
+ "gameplay": {
+  "x": 474,
+  "y": 0,
+  "w": 972,
+  "h": 1080
+ },
+ "endcard": "../perfil/tela_final.png",
+ "cuts": [
+  {
+   "id": "06_urso_polar",
+   "title": "SOLTARAM UM URSO\nPOLAR NO GTA 6",
+   "segments": [
+    [
+     536.63,
+     545.55
+    ],
+    [
+     588.33,
+     599.81
+    ],
+    [
+     614.17,
+     632.39
+    ],
+    [
+     639.07,
+     645.33
+    ],
+    [
+     658.65,
+     665.01
+    ],
+    [
+     672.15,
+     676.95
+    ]
+   ]
+  },
+  {
+   "id": "07_assalto_do_amor",
+   "title": "O ASSALTO MAIS\nROMÂNTICO DO GTA 6",
+   "segments": [
+    [
+     1496.59,
+     1518.21
+    ],
+    [
+     1523.97,
+     1540.51
+    ],
+    [
+     1561.71,
+     1574.23
+    ],
+    [
+     1581.57,
+     1583.79
+    ]
+   ]
+  },
+  {
+   "id": "08_gta6_copiou_red_dead",
+   "title": "O GTA 6 COPIOU\nO RED DEAD?",
+   "segments": [
+    [
+     921.17,
+     935.65
+    ],
+    [
+     1006.95,
+     1021.31
+    ],
+    [
+     1061.53,
+     1080.55
+    ]
+   ]
+  },
+  {
+   "id": "09_trem_destruiu_o_carro",
+   "title": "O TREM DESTRUIU\nO CARRO TUNADO",
+   "segments": [
+    [
+     1769.15,
+     1773.91
+    ],
+    [
+     1820.79,
+     1842.01
+    ],
+    [
+     1849.35,
+     1862.19
+    ],
+    [
+     1863.37,
+     1868.35
+    ],
+    [
+     1897.67,
+     1906.94
+    ]
+   ]
+  },
+  {
+   "id": "10_livro_mais_bizarro",
+   "title": "O LIVRO MAIS\nBIZARRO DO GTA 6",
+   "segments": [
+    [
+     3555.99,
+     3561.95
+    ],
+    [
+     3565.83,
+     3579.35
+    ],
+    [
+     3691.15,
+     3695.25
+    ],
+    [
+     3698.53,
+     3702.03
+    ],
+    [
+     3780.21,
+     3790.35
+    ],
+    [
+     3940.09,
+     3944.63
+    ],
+    [
+     3977.53,
+     3980.83
+    ],
+    [
+     4293.77,
+     4300.89
+    ]
+   ]
+  }
+ ]
+}

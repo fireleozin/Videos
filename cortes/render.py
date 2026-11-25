@@ -21,6 +21,7 @@ FPS = 60
 CAPTION_Y = CAM_H + 215        # legendas logo abaixo do título/emenda, sobre o gameplay
 TITLE_SECS = 3.2
 FONT = "Inter Black"
+CAPTIONS_DIR = "captions"
 JOIN_FADE = 0.025               # micro fade nas emendas (evita estalos)
 
 def ts(t):
@@ -43,7 +44,8 @@ def chunk_words(words, max_words=3, max_chars=16, gap=0.45):
             mw, mc = (12, 48) if wd["style"] == "npc" else (max_words, max_chars)
             if (len(cur) >= mw or text_len > mc or wd["t"] - prev["end"] > gap
                     or re.search(r"[.?!]$", prev["raw"])
-                    or (prev["raw"].endswith(",") and len(cur) >= 2) or wd["style"] != prev["style"]):
+                    or (prev["raw"].endswith(",") and len(cur) >= 2)
+                    or wd.get("seg") != prev.get("seg") or wd["style"] != prev["style"]):
                 chunks.append(cur); cur = []
         cur.append(wd)
     if cur: chunks.append(cur)
@@ -71,7 +73,8 @@ def build_ass(cut, words_src, segs, path):
         mt = m(t0)
         if mt is None or not raw: continue
         end = min(mt + max(t1 - t0, 0.1), seg_end(t0))
-        words.append({"t": mt, "end": end, "raw": raw, "w": clean(raw), "style": "main"})
+        seg = next((i for i, (a, b, o) in enumerate(offs) if a - 0.3 <= t0 < b), -1)
+        words.append({"t": mt, "end": end, "raw": raw, "w": clean(raw), "style": "main", "seg": seg})
     words.sort(key=lambda x: x["t"])
     for i, wd in enumerate(words):      # nunca sobrepor a próxima palavra
         if i + 1 < len(words):
@@ -133,7 +136,7 @@ def render(cfg, cut, src, outdir, test=False):
     # cada trecho: [inicio, fim] ou [inicio, fim, x_do_recorte_de_gameplay]
     gx = [s[2] if len(s) > 2 else cfg["gameplay"]["x"] for s in cut["segments"]]
     segs = [s[:2] for s in cut["segments"]]
-    words = json.load(open(os.path.join(HERE, "captions", cut["id"] + ".json"), encoding="utf-8"))
+    words = json.load(open(os.path.join(HERE, CAPTIONS_DIR, cut["id"] + ".json"), encoding="utf-8"))
     if test:  # remapeia tudo para uma fonte sintética curta e contínua
         acc, nsegs, shift = 0.0, [], []
         for a, b in segs:
@@ -208,9 +211,15 @@ def make_test_source(path, dur):
 
 def main():
     test = "--test" in sys.argv
-    only = [a for a in sys.argv[1:] if not a.startswith("--")]
-    cfg = json.load(open(os.path.join(HERE, "cuts.json"), encoding="utf-8"))
-    outdir = os.path.join(HERE, "test_output" if test else "output")
+    args = sys.argv[1:]
+    conf = "cuts.json"
+    if "--config" in args:
+        i = args.index("--config"); conf = args[i + 1]; del args[i:i + 2]
+    only = [a for a in args if not a.startswith("--")]
+    cfg = json.load(open(os.path.join(HERE, conf), encoding="utf-8"))
+    global CAPTIONS_DIR
+    CAPTIONS_DIR = cfg.get("captions_dir", "captions")
+    outdir = os.path.join(HERE, "test_output" if test else cfg.get("output_dir", "output"))
     os.makedirs(outdir, exist_ok=True)
     src = os.path.join(HERE, cfg["source"])
     if test:
