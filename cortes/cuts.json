@@ -1,0 +1,147 @@
+{
+ "source": "source/video.mp4",
+ "facecam": {
+  "x": 1506,
+  "y": 452,
+  "w": 414,
+  "h": 276
+ },
+ "gameplay": {
+  "x": 264,
+  "y": 0,
+  "w": 972,
+  "h": 1080
+ },
+ "cuts": [
+  {
+   "id": "01_mario_se_empolgou",
+   "title": "O MÁRIO SE EMPOLGOU\nNO PALCO",
+   "segments": [
+    [
+     6204.6,
+     6215.2
+    ],
+    [
+     6227.8,
+     6239.0
+    ],
+    [
+     6264.5,
+     6274.0
+    ],
+    [
+     6328.9,
+     6344.0
+    ],
+    [
+     6356.3,
+     6365.0
+    ],
+    [
+     6447.6,
+     6452.6
+    ]
+   ]
+  },
+  {
+   "id": "02_morango_suspeito",
+   "title": "ELE NÃO USA DROGAS...\nSÓ COME MORANGO",
+   "segments": [
+    [
+     3554.5,
+     3557.6
+    ],
+    [
+     3573.5,
+     3583.0
+    ],
+    [
+     3587.5,
+     3590.6
+    ],
+    [
+     3597.0,
+     3615.0
+    ],
+    [
+     3634.5,
+     3637.19
+    ],
+    [
+     3652.9,
+     3668.6
+    ]
+   ]
+  },
+  {
+   "id": "03_tunou_e_bateu",
+   "title": "GASTOU TUDO TUNANDO\nO CARRO... E BATEU",
+   "segments": [
+    [
+     2975.4,
+     2996.51
+    ],
+    [
+     3046.3,
+     3052.4
+    ],
+    [
+     3076.5,
+     3079.4
+    ],
+    [
+     3102.0,
+     3107.4
+    ],
+    [
+     3125.6,
+     3139.6
+    ],
+    [
+     5611.0,
+     5618.03
+    ],
+    [
+     5621.58,
+     5626.0
+    ]
+   ]
+  },
+  {
+   "id": "04_policial_bateu_nele",
+   "title": "O POLICIAL BATEU NELE...\nE ELE QUE FOI PROCURADO",
+   "segments": [
+    [
+     4556.0,
+     4611.0
+    ],
+    [
+     4635.6,
+     4637.6
+    ]
+   ]
+  },
+  {
+   "id": "05_nao_sou_psicopata",
+   "title": "\"NÃO SOU PSICOPATA,\nSOU PROFISSIONAL\"",
+   "segments": [
+    [
+     985.53,
+     1009.0
+    ],
+    [
+     4264.6,
+     4272.3
+    ],
+    [
+     7685.37,
+     7697.0
+    ],
+    [
+     7709.77,
+     7719.91
+    ]
+   ]
+  }
+ ]
+}
