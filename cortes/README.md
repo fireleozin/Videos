@@ -75,3 +75,19 @@ Fonte: https://youtu.be/b0PVpihgP9c. Configuração em `cuts_parte11.json`, lege
 | 21h | 10 – Livro | ALAN LEU O LIVRO MAIS BIZARRO DO GTA 6 E SE ARREPENDEU KKKKK |
 
 Hashtags (todos): #gta6 #rockstargames #alanzoka #alanzokavideos #alanzokamemes
+
+---
+
+# Parte 12: "NOVOS AMIGOS! - GTA 6 - Parte 12" (alanzoka)
+
+Fonte: https://youtu.be/PT0-u58YlN0. Configuração em `cuts_parte12.json`. Para renderizar: `python3 render.py --config cuts_parte12.json`. Dois cortes passam de 65 s (regra de monetização em `CLAUDE.md`).
+
+| Horário | Corte | Duração | Descrição |
+|---|---|---|---|
+| 09h | 11 – Taco sumiu | 53s | ALAN COMPROU 2 TACOS NO GTA 6 E O JOGO SUMIU COM ELES KKKKK |
+| 12h | 12 – Assaltado parado | 64s | ALAN TAVA PARADO NO CARRO E FOI ASSALTADO NO GTA 6 KKKKK |
+| 15h | 13 – Vestido de 50 mil | 56s | ALAN GASTOU 2 MIL NA ROUPA DA LUCIA E ELA DESTRUIU NA MESMA HORA KKKKK |
+| 18h | 14 – Racha (longo) | 70s | ALAN ALUGOU UM CARRO MERDA E GANHOU O RACHA MESMO ASSIM KKKKK |
+| 21h | 15 – Não sei roubar (longo) | 69s | ALAN TAVA MILIONÁRIO NO GTA 6 E PERDEU TUDO NUM ASSALTO KKKKK |
+
+Hashtags (todos): #gta6 #rockstargames #alanzoka #alanzokavideos #alanzokamemes

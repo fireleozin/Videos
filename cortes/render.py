@@ -134,7 +134,9 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 
 def render(cfg, cut, src, outdir, test=False):
     # cada trecho: [inicio, fim] ou [inicio, fim, x_do_recorte_de_gameplay]
-    gx = [s[2] if len(s) > 2 else cfg["gameplay"]["x"] for s in cut["segments"]]
+    gx = [s[2] if len(s) > 2 and s[2] is not None else cfg["gameplay"]["x"] for s in cut["segments"]]
+    # 4º valor opcional: a partir desse tempo da fonte, congela a imagem (o áudio continua)
+    fz = [s[3] if len(s) > 3 else None for s in cut["segments"]]
     segs = [s[:2] for s in cut["segments"]]
     words = json.load(open(os.path.join(HERE, CAPTIONS_DIR, cut["id"] + ".json"), encoding="utf-8"))
     if test:  # remapeia tudo para uma fonte sintética curta e contínua
@@ -159,10 +161,11 @@ def render(cfg, cut, src, outdir, test=False):
     f = []
     for i, (a, b) in enumerate(segs):
         d = b - a
+        frz = f",trim=0:{fz[i] - a:.3f},tpad=stop_mode=clone:stop_duration={b - fz[i]:.3f}" if fz[i] else ""
         f.append(f"[{i}:v]fps={FPS},setpts=PTS-STARTPTS,format=yuv420p,split=2[c1_{i}][c2_{i}]")
         f.append(f"[c1_{i}]crop={fc['w']}:{fc['h']}:{fc['x']}:{fc['y']},scale={OUT_W}:{CAM_H}:flags=lanczos,"
                  f"eq=contrast=1.03:saturation=1.08[cam{i}]")
-        f.append(f"[c2_{i}]crop={gp['w']}:{gp['h']}:{gx[i]}:{gp['y']},scale={OUT_W}:{GAME_H}:flags=lanczos,"
+        f.append(f"[c2_{i}]{frz.lstrip(',')}{',' if frz else ''}crop={gp['w']}:{gp['h']}:{gx[i]}:{gp['y']},scale={OUT_W}:{GAME_H}:flags=lanczos,"
                  f"eq=saturation=1.1[game{i}]")
         f.append(f"[cam{i}][game{i}]vstack=inputs=2[v{i}]")
         f.append(f"[{i}:a]aresample=48000,asetpts=PTS-STARTPTS,"
